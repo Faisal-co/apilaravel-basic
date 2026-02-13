@@ -12,7 +12,7 @@ class PostController extends Controller
      */
     public function index() 
     {
-        return 'index_V1';
+        return [1,2,3];
     }
 
     /**
@@ -20,7 +20,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all(); // To take Everything from request.
+        return $data;
+        // return response()->json([
+        //     'id'=> 1,
+        //     'title'=> 'tset apply',
+        //     'body'=> 'Post body',
+        // ],201)//->setStatusCode(201)
+        // ;
+        
     }
 
     /**
@@ -28,7 +36,15 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return response()->json([
+        'message'=>'abc',    
+        'data'=>[
+            'id'=> 1,
+            'title'=> 'tset',
+            'body'=> 'Post body'
+        ]])
+        ->header('test','faisal')
+        ->header('test2','siraj');
     }
 
     /**
