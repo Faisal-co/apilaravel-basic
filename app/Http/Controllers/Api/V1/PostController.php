@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Post;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -24,14 +26,20 @@ class PostController extends Controller
      */
     public function store(Request $request) // This method with 201 status code.
     {
+            $data = $request->validate([
+            'title'=>'required|string|min:2',
+            'body'=>['required','string','min:2']
+        ]);
+        $data['author_id'] = 1;
+        $post = Post::create($data);
         // $data = $request->all(); // To take Everything from request.
-        $data = $request->only('title','body'); // only for particular key and value will be output in response.
-        return response()->json([
-            'id'=> 1,
-            'title'=> $data['title'],
-            'body'=> $data['body'],
-        ],201)//->setStatusCode(201)
-        ;
+        // $data = $request->only('title','body'); // only for particular key and value will be output in response.
+        return response()->json($post,201);
+        //     [
+        //     'id'=> $post->id,
+        //     'title'=> $data['title'],
+        //     'body'=> $data['body'],
+        // ],201)//->setStatusCode(201);
         
     }
 
