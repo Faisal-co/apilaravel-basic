@@ -1,5 +1,5 @@
 <?php
-
+// Class for Type of Data send and receive from database.
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;

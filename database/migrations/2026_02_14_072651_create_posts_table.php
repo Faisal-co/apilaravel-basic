@@ -7,7 +7,7 @@ use App\Models\User;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations for SQL Quries.
      */
     public function up(): void
     {
