@@ -30,7 +30,7 @@ class PostController extends Controller
             'title'=>'required|string|min:2',
             'body'=>['required','string','min:2']
         ]);
-        $data['author_id'] = 1;
+        $data['author_id'] = 2;
         $post = Post::create($data);
         // $data = $request->all(); // To take Everything from request.
         // $data = $request->only('title','body'); // only for particular key and value will be output in response.
