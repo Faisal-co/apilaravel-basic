@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\Request;
+use App\Http\Resources\PostResource;
 
 class PostController extends Controller
 {
@@ -15,7 +16,9 @@ class PostController extends Controller
      */
     public function index() // This method with 200 status code.
     {   
-        return Post::all();
+        return PostResource::collection(Post::all());
+        // OR
+        // return Post::all(); 
         // return [[
         //          'id'=> 1,
         //           'title'=> 'tset apply',
