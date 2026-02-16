@@ -17,7 +17,7 @@ class PostController extends Controller
     public function index() // To Get All recordsThis method with 200 status code.
     {   
         // return PostResource::collection(Post::with('author')->get()); // showing all records with author.
-        return PostResource::collection(Post::with('author')->paginate(4));// with pagination.
+        return PostResource::collection(Post::with('author')->paginate());// with pagination.
         // OR
         // return Post::all(); 
         // return [[
