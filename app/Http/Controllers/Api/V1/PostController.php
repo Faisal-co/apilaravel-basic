@@ -57,7 +57,7 @@ class PostController extends Controller
     public function show(Post $post) // To Get one recotrd This method with 200 status code.
     {
         //$post = Post::findOrFail($id); OR // Model binding function show(Post $post).
-        return response()->json(new PostResource($post)); // With Resource is better.
+        return new PostResource($post); // With Resource is better.
         // return response()->json([
         // 'message'=>'abc',    
         // 'data'=>[

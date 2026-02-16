@@ -28,3 +28,5 @@ Route::prefix('v1')->group(function(){
 Route::prefix('v2')->group(function(){
     Route::apiResource('posts', V2PostController::class);
 });
+
+require __DIR__.'/auth.php'; // Our api routes Linked with auth.php routes ???
