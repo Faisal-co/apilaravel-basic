@@ -8,6 +8,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class PostResource extends JsonResource
 {
+    // public static $wrap = null; // to remove respone data wrap from response accept for post create and post update.
     /**
      * Transform the resource into an array.
      *
@@ -26,7 +27,7 @@ class PostResource extends JsonResource
                 'name'=> $this->author->name
             ]*/
             // OR
-            'author'=> new UserResource($this->author)
+            'author'=> new UserResource($this->whenLoaded('author'))// block Weather author information sholud loaded or not.
         ];
     }
 }

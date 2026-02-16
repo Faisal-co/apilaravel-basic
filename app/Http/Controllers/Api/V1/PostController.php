@@ -14,9 +14,10 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() // This method with 200 status code.
+    public function index() // To Get All recordsThis method with 200 status code.
     {   
-        return PostResource::collection(Post::all());
+        // return PostResource::collection(Post::with('author')->get()); // showing all records with author.
+        return PostResource::collection(Post::with('author')->paginate(4));// with pagination.
         // OR
         // return Post::all(); 
         // return [[
@@ -29,7 +30,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePostRequest $request) // This method with 201 status code.
+    public function store(StorePostRequest $request) // To Create record This method with 201 status code.
     {
                 $data = $request->validated();
         //     $data = $request->validate([
@@ -37,10 +38,11 @@ class PostController extends Controller
         //     'body'=>['required','string','min:2']
         // ]);
         $data['author_id'] = 1;
-        $post = Post::create($data);
+        $post = Post::create($data); 
         // $data = $request->all(); // To take Everything from request.
         // $data = $request->only('title','body'); // only for particular key and value will be output in response.
-        return response()->json($post,201);
+        // return response()->json($post,201); // it is only for Model post but bettrt with Resource like below.
+        return new PostResource($post); // if this PostResource() will be inside response()->json() then not wrapped in data.
         //     [
         //     'id'=> $post->id,
         //     'title'=> $data['title'],
@@ -52,10 +54,10 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post) // This method with 200 status code.
+    public function show(Post $post) // To Get one recotrd This method with 200 status code.
     {
         //$post = Post::findOrFail($id); OR // Model binding function show(Post $post).
-        return response()->json($post);
+        return response()->json(new PostResource($post)); // With Resource is better.
         // return response()->json([
         // 'message'=>'abc',    
         // 'data'=>[
@@ -70,14 +72,14 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post) // This method with 200 status code OR Validation.
+    public function update(Request $request, Post $post) // To Update record This method with 200 status code OR Validation.
     {
         $data = $request->validate([
             'title'=>'required|string|min:2',
             'body'=>['required','string','min:2']
         ]);
         $post->update($data);
-        return $post;
+        return new PostResource($post);
     }
 
     /**
