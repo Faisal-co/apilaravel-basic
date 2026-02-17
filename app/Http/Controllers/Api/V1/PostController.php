@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\PostResource;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -17,7 +18,9 @@ class PostController extends Controller
     public function index() // To Get All recordsThis method with 200 status code.
     {   
         // return PostResource::collection(Post::with('author')->get()); // showing all records with author.
-        return PostResource::collection(Post::with('author')->paginate());// with pagination.
+        $user = request()->user();
+        $posts = $user->posts()->paginate(); // with pagination.
+        return PostResource::collection($posts);
         // OR
         // return Post::all(); 
         // return [[
@@ -37,7 +40,7 @@ class PostController extends Controller
         //     'title'=>'required|string|min:2',
         //     'body'=>['required','string','min:2']
         // ]);
-        $data['author_id'] = 1;
+        $data['author_id'] = $request->user()->id; // To get the id of the currently authenticated user and assign it to the author_id field of the post.
         $post = Post::create($data); 
         // $data = $request->all(); // To take Everything from request.
         // $data = $request->only('title','body'); // only for particular key and value will be output in response.
@@ -56,6 +59,7 @@ class PostController extends Controller
      */
     public function show(Post $post) // To Get one recotrd This method with 200 status code.
     {
+        abort_if(Auth::id() != $post->author_id, 403,'Access Denied'); // To check if the authenticated user is the author of the post, if not then it will return 403 status code.
         //$post = Post::findOrFail($id); OR // Model binding function show(Post $post).
         return new PostResource($post); // With Resource is better.
         // return response()->json([
@@ -74,6 +78,7 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post) // To Update record This method with 200 status code OR Validation.
     {
+        abort_if(Auth::id() != $post->author_id, 403,'Access Denied');
         $data = $request->validate([
             'title'=>'required|string|min:2',
             'body'=>['required','string','min:2']
@@ -87,6 +92,7 @@ class PostController extends Controller
      */
     public function destroy(Post $post) // // This method with 204 status code.
     {
+        abort_if(Auth::id() != $post->author_id, 403,'Access Denied');
         $post->delete();
         return response()->noContent(); // means with 204 Status Code.
     }

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\PostController as V1PostController;
 use App\Http\Controllers\Api\V2\PostController as V2PostController;
 
-Route::middleware('auth:sanctum')->group(function(){
+Route::middleware(['auth:sanctum','throttle:api'])->group(function(){
     Route::get('/user', function (Request $request) {
     return $request->user();
     });
